@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create new user</title>
+</head>
+
+<body>
+    <style>
+        input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=text]:focus {
+            border: 3px solid #555;
+        }
+
+        button[id=addUser] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[id=addUser]:hover {
+            background-color: #45a049;
+        }
+
+        button[id=cancelCreate] {
+            width: 100%;
+            border-color: #9c9c9c;
+            border-width: 1px;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[id=logout] {
+            width: 30%;
+            border-color: blueviolet;
+            border-width: 1px;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        div[class=createUserForm] {
+            width: 100%;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px 20px 20px;
+        }
+
+        div[class=user_form] {
+            width: 40%;
+            margin: auto;
+        }
+
+        div[class=logoutButton] {
+            width: 100%;
+            border-radius: 5px;
+            padding: 20px 0px 20px;
+        }
+    </style>
+
+<div class="user_form">
+    <h2>Create new user</h2>
+    <div class="createUserForm">
+        <form th:action="@{/admin/create}" th:object="${admCreateUser}" method="POST">
+
+            <label for="username">Username: </label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Your username.." required>
+            <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div><br><br>
+
+            <label for="password">Password: </label>
+            <input type="text" id="password" th:field="*{password}" placeholder="Your password.." required>
+            <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name error</div><br><br>
+
+            <label for="firstname">Firstname: </label>
+            <input type="text" id="firstname" th:field="*{firstName}" placeholder="Your name.." required>
+            <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name error</div><br><br>
+
+            <label for="lastname">Lastname: </label>
+            <input type="text" id="lastname" th:field="*{lastName}" placeholder="Your last name.." required>
+            <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name error</div><br><br>
+
+            <label for="email">Email: </label>
+            <input type="text" id="email" th:field="*{email}" placeholder="ex: example@domain.com" required>
+            <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name error</div><br><br>
+
+            <label for="birthday">Birthday: </label>
+            <input type="text" id="birthday" th:field="*{birthday}" placeholder="ex: 1980-01-01" required>
+            <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Name error</div><br><br>
+
+            <label for="phone_number">Phone number: </label>
+            <input type="text" id="phone_number" th:field="*{phoneNumber}" placeholder="ex: +5 (555) 555-55-55" required>
+            <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Name error</div><br><br>
+
+            <div>
+                <label for="role">Role: </label>
+                <select id="role" name="roleName">
+                    <option value="ROLE_USER" selected>ROLE_USER</option>
+                    <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                </select>
+            </div>
+
+            <button id="addUser" type="submit">Create user</button>
+        </form>
+
+        <form class="cancelCreate" role="form" th:action="@{/admin/users}" method="GET">
+            <button id="cancelCreate" type="submit" name="action" value="cancelCreate">Cancel</button>
+        </form>
+    </div>
+
+    <div class="logoutButton">
+        <form class="logout" role="form" th:action="@{/logout}" method="post">
+            <button id="logout" type="submit" name="action" value="logout">Log out</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

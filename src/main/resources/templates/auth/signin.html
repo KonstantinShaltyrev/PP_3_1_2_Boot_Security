@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+</head>
+<body>
+
+<style>
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+        border: 3px solid #555;
+    }
+
+    button[id=addUser] {
+        width: 100%;
+        position: revert;
+        left: 50%;
+
+
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=addUser]:hover {
+        background-color: #45a049;
+    }
+
+    button[id=signUp] {
+        width: 100%;
+        border-color: #9c9c9c;
+        border-width: 1px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    div[class=signIn] {
+        width: 25%;
+        margin: auto;
+    }
+
+    div[class=loginUserForm] {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px 20px 20px;
+    }
+</style>
+
+<div class="signIn">
+    <h2>Please sign in</h2>
+
+    <div class="loginUserForm">
+        <form th:action="@{/auth/login}" method="POST"> <!--action="/process_login">-->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <label for="username">Username: </label>
+            <input type="text" name="username" id="username" placeholder="Username" required><br><br>
+
+            <label for="password">Password: </label>
+            <input type="text" name="password" id="password" placeholder="Password" required><br><br>
+
+            <button id="addUser" type="submit" value="Sign in">Sign in</button>
+
+            <div th:if="${param.error}" style="color: red">
+                Incorrect username or password
+            </div>
+        </form>
+        <br>
+        <form class="signUp" role="form" th:action="@{/auth/signup}" method="GET">
+            <button id="signUp" type="submit" name="action" value="Sign up">Sign up</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create new user</title>
+</head>
+
+<style>
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+        border: 3px solid #555;
+    }
+
+    button[id=addUser] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=addUser]:hover {
+        background-color: #45a049;
+    }
+
+    button[id=cancel] {
+        width: 100%;
+        border-color: #9c9c9c;
+        border-width: 1px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    div[class=signUp] {
+        width: 40%;
+        margin: auto;
+    }
+
+    div[class=createUserForm] {
+        width: 100%;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px 20px 20px;
+    }
+</style>
+
+<body>
+<div class="signUp">
+    <h2>Please sign up</h2>
+
+<div class="createUserForm">
+    <form th:action="@{/auth/signup}" th:object="${newUser}" method="POST">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" placeholder="Your username..">
+        <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div><br><br>
+
+        <label for="password">Password:</label>
+        <input type="text" id="password" th:field="*{password}" placeholder="Your password..">
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name error</div><br><br>
+
+        <label for="firstname">Firstname:</label>
+        <input type="text" id="firstname" th:field="*{firstName}" placeholder="Your name..">
+        <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name error</div><br><br>
+
+        <label for="lastname">Lastname:</label>
+        <input type="text" id="lastname" th:field="*{lastName}" placeholder="Your last name..">
+        <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name error</div><br><br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}" placeholder="ex: example@domain.com">
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name error</div><br><br>
+
+        <label for="birthday">Birthday:</label>
+        <input type="text" id="birthday" th:field="*{birthday}" placeholder="ex: 1980-01-01">
+        <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Name error</div><br><br>
+
+        <label for="phone_number">Phone number:</label>
+        <input type="text" id="phone_number" th:field="*{phoneNumber}" placeholder="ex: +5 (555) 555-55-55">
+        <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Name error</div><br><br>
+
+        <button id="addUser" type="submit">Create an account</button>
+    </form>
+    <br>
+    <form class="cancelUpdate" role="form" th:action="@{/auth/login}" method="GET">
+        <button id="cancel" type="submit" name="action" value="cancelUpdate">Sign in</button>
+    </form>
+</div>
+</div>
+</body>
+</html>

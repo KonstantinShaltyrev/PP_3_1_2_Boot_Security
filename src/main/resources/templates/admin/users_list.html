@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users list</title>
+</head>
+
+<body>
+<style>
+    table {
+        border-collapse: collapse;
+        border: 2px solid black;
+        letter-spacing: normal;
+        font-size: 1.2rem;
+    }
+
+    td, th {
+        border: 1px solid black;
+        padding: 10px 20px;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    caption {
+        caption-side: top;
+        padding: 10px;
+        font-size: 1.5rem;
+    }
+
+    button[id=updateButton] {
+        width: 100%;
+        border-color: #45a049;
+        border-width: 2px;
+        padding: 10px 10px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=logout] {
+        width: 30%;
+        border-color: blueviolet;
+        border-width: 1px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=deleteButton] {
+        width: 100%;
+        border-color: brown;
+        border-width: 2px;
+        padding: 10px 10px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=addButton] {
+        width: 100%;
+        border-color: #45a049;
+        border-width: 2px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    div[class=user_form] {
+        width: 50%;
+        margin: auto;
+    }
+</style>
+<div class="user_form">
+    <h2>List of Users</h2>
+    <div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Birthday</th>
+                <th>Email</th>
+                <th>Phone number</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+
+            <tr th:each="user : ${userList}">
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.getUsername()}"></td>
+                <td th:text="${user.getFirstName()}"></td>
+                <td th:text="${user.getLastName()}"></td>
+                <td th:text="${user.getBirthday()}"></td>
+                <td th:text="${user.getEmail()}"></td>
+                <td th:text="${user.getPhoneNumber()}"></td>
+                <td>
+                    <ul th:each="role: ${user.getRoles()}">
+                        <li th:text="${role.getRoleName()}"></li>
+                    </ul>
+                </td>
+
+
+                <td>
+                    <form class="updateUser" role="form" th:action="@{/admin/update}" th:method="get">
+                            <button id="updateButton" type="submit" name="action" value="updateUser" th:name="id" th:value="${user.id}">Update user</button>
+                    </form>
+                    <form class="deleteUser" role="form" th:action="@{/admin/delete}" th:method="post">
+                            <button id=deleteButton type="submit" name="action" value="deleteUser" th:name="id" th:value="${user.id}">Delete user</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <form class="addUser" role="form" th:action="@{/admin/create}" method="GET">
+        <br><button id=addButton type="submit" name="action" value="addUser">Add user</button>
+    </form>
+
+    <form class="logout" role="form" th:action="@{/logout}" method="post">
+        <button id="logout" type="submit" name="action" value="logout">Log out</button>
+    </form>
+</div>
+
+</body>
+</html>

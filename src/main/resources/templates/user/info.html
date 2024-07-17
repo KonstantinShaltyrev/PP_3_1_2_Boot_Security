@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create new user</title>
+</head>
+
+<body>
+<style>
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+        border: 3px solid #555;
+    }
+
+    button[id=updateUser] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[id=updateUser]:hover {
+        background-color: #45a049;
+    }
+
+    button[id=logout] {
+        width: 30%;
+        border-color: blueviolet;
+        border-width: 1px;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    div[class=userInfo] {
+        width: 40%;
+        margin: auto;
+    }
+
+    div[class=userInfoForm] {
+        width: 100%;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px 20px 20px;
+    }
+
+    div[class=logoutButton] {
+        width: 100%;
+        border-radius: 5px;
+        padding: 20px 0px 20px;
+    }
+</style>
+
+<div class="userInfo">
+    <h2>User Info</h2>
+
+    <div class="userInfoForm">
+        <form th:object="${currentUser}">
+           <!-- <form th:action="@{/users/update}" th:object="${user}" method="POST">-->
+
+            <label for="id"></label>
+            <input id="id" th:field="*{id}" hidden="hidden">
+
+            <label for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div><br><br>
+
+            <!--<label for="password">Password</label>
+            <input type="text" id="password" th:field="*{password}">
+            <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name error</div><br><br>-->
+
+            <label for="firstname">Firstname</label>
+            <input type="text" id="firstname" th:field="*{firstName}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name error</div><br><br>
+
+            <label for="lastname">Lastname</label>
+            <input type="text" id="lastname" th:field="*{lastName}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name error</div><br><br>
+
+            <label for="email">Email</label>
+            <input type="text" id="email" th:field="*{email}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name error</div><br><br>
+
+            <label for="birthday">Birthday</label>
+            <input type="text" id="birthday" th:field="*{birthday}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Name error</div><br><br>
+
+            <label for="phone_number">Phone number</label>
+            <input type="text" id="phone_number" th:field="*{phoneNumber}" readonly>
+            <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Name error</div><br><br>
+
+            <!--<button id="updateUser" type="submit">Update user</button>-->
+        </form>
+    </div>
+
+    <div class="logoutButton">
+        <form class="logout" role="form" th:action="@{/logout}" method="post">
+            <button id="logout" type="submit" name="action" value="logout">Log out</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

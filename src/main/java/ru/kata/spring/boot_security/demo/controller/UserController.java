@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 
-
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {

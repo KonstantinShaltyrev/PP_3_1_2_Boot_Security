@@ -53,9 +53,19 @@ public class AdminController {
     @PostMapping(value ="/create")
     public String createUser(@Validated @ModelAttribute("admCreateUser") User admCreateUser, BindingResult bindingResult, String roleName) {
         userValidator.validate(admCreateUser, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return "admin/user_create";
+        }
+        if (roleService.findByRoleName("ROLE_ADMIN").isEmpty()) {
+            Role role = new Role();
+
+            role.setRoleName("ROLE_ADMIN");
+            roleService.save(role);
+            if (roleService.findByRoleName("ROLE_USER").isEmpty()) {
+                role.setRoleName("ROLE_User");
+                roleService.save(role);
+            }
+
         }
 
         Set<Role> rolesSet = new HashSet<>();

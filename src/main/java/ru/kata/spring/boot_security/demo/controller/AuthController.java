@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
@@ -23,13 +24,13 @@ public class AuthController {
 
     private final UserValidator userValidator;
     private final UserService userService;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public AuthController(UserValidator userValidator, UserService userService, RoleRepository roleRepository) {
+    public AuthController(UserValidator userValidator, UserService userService, RoleService roleService) {
         this.userValidator = userValidator;
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @GetMapping("/login")
@@ -48,16 +49,16 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return "auth/signup";
         }
-        if (roleRepository.findByRoleName("ROLE_USER").isEmpty()) {
+        if (roleService.findByRoleName("ROLE_USER").isEmpty()) {
             Role role = new Role();
 
             role.setRoleName("ROLE_USER");
-            roleRepository.save(role);
+            roleService.save(role);
         }
 
         Set<Role> set = new HashSet<>();
 
-        set.add(roleRepository.findByRoleName("ROLE_USER").get());
+        set.add(roleService.findByRoleName("ROLE_USER").get());
         user.setRoles(set);
         userService.addUser(user);
         return "redirect:/auth/login";

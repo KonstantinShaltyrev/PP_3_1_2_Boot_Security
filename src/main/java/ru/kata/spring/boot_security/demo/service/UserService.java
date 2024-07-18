@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    public void addUser(User user);
+    public void addUser(User user, String roleName);
     public List<User> findAll();
     public Optional<User> findByUsername(String username);
     public Optional<User> findById(long id);
-    public void updateUser(User user);
     public void deleteById(long id);
+    public String findRoleName (Long id);
+    public void updateUser(User user, String roleName);
 }

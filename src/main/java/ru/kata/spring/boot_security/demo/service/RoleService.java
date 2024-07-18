@@ -15,4 +15,5 @@ public interface RoleService {
     public Optional<Role> findRoleById(long id);
     public void delete(Role role);
     public void deleteRoleById(long id);
+    public void checkRoles();
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
@@ -51,5 +50,20 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void deleteRoleById(long id) {
         roleRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void checkRoles() {
+        Role role = new Role();
+
+        if (findByRoleName("ROLE_ADMIN").isEmpty()) {
+            role.setRoleName("ROLE_ADMIN");
+            save(role);
+        }
+
+        if (findByRoleName("ROLE_USER").isEmpty()) {
+            role.setRoleName("ROLE_User");
+            save(role);
+        }
     }
 }

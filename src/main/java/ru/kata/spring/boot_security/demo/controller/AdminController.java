@@ -10,16 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -27,13 +20,11 @@ public class AdminController {
 
     private final UserValidator userValidator;
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserValidator userValidator, UserService userService, RoleService roleService) {
+    public AdminController(UserValidator userValidator, UserService userService) {
         this.userValidator = userValidator;
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -51,31 +42,13 @@ public class AdminController {
 
     @SuppressWarnings("all")
     @PostMapping(value ="/create")
-    public String createUser(@Validated @ModelAttribute("admCreateUser") User admCreateUser, BindingResult bindingResult, String roleName) {
-        userValidator.validate(admCreateUser, bindingResult);
+    public String createUser(@Validated @ModelAttribute("admCreateUser") User admCreatedUser, BindingResult bindingResult, String roleName) {
+        userValidator.validate(admCreatedUser, bindingResult);
         if (bindingResult.hasErrors()) {
             return "admin/user_create";
         }
-        if (roleService.findByRoleName("ROLE_ADMIN").isEmpty()) {
-            Role role = new Role();
 
-            role.setRoleName("ROLE_ADMIN");
-            roleService.save(role);
-            if (roleService.findByRoleName("ROLE_USER").isEmpty()) {
-                role.setRoleName("ROLE_User");
-                roleService.save(role);
-            }
-
-        }
-
-        Set<Role> rolesSet = new HashSet<>();
-
-        if (roleName.equals("ROLE_ADMIN")) {
-            rolesSet.add(roleService.findByRoleName("ROLE_ADMIN").get());
-        }
-        rolesSet.add(roleService.findByRoleName("ROLE_USER").get());
-        admCreateUser.setRoles(rolesSet);
-        userService.addUser(admCreateUser);
+        userService.addUser(admCreatedUser, roleName);
         return "redirect:/admin/users";
     }
 
@@ -83,32 +56,20 @@ public class AdminController {
     public String updateForm(@ModelAttribute("id") Long id, Model model) {
         User userById = userService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        List<String> currentRoles = new ArrayList<>();
-
-        userById.getRoles().forEach(p -> currentRoles.add(p.getRoleName()));
-        String currentRole = currentRoles.contains("ROLE_ADMIN") ? "ROLE_ADMIN" : "ROLE_USER";
 
         model.addAttribute("currentUser", userById);
-        model.addAttribute("currentRole", currentRole);
+        model.addAttribute("currentRole", userService.findRoleName(id));
         return "admin/user_update";
     }
 
     @PostMapping(value ="/update")
     public String updateUser(@Validated @ModelAttribute("currentUser") User updatedUser, BindingResult bindingResult, String roleName) {
         userValidator.validate(updatedUser, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return "admin/user_update";
         }
 
-        Set<Role> rolesSet = new HashSet<>();
-
-        if (roleName.equals("ROLE_ADMIN")) {
-            rolesSet.add(roleService.findByRoleName("ROLE_ADMIN").get());
-        }
-        rolesSet.add(roleService.findByRoleName("ROLE_USER").get());
-        updatedUser.setRoles(rolesSet);
-        userService.updateUser(updatedUser);
+        userService.updateUser(updatedUser, roleName);
         return "redirect:/admin/users";
     }
 
